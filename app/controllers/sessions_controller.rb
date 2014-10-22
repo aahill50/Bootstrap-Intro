@@ -13,16 +13,29 @@ class SessionsController < ApplicationController
 
     if @user
       sign_in(@user)
-      redirect_to user_url(@user)
+
+      if request.xhr?
+        head :ok
+      else
+        redirect_to user_url(@user)
+      end
+      # respond_to do |format|
+      #   format.html { redirect_to user_url(@user) }
+      #   format.json { head :ok }
+      # end
     else
-      flash.now[:errors] = ["Invalid Credentials"]
-      render :new
+      respond_to do |format|
+        format.json { render json: "Invalid credentials", status: 422 }
+      end
+      # flash.now[:errors] = ["Invalid Credentials"]
+      # render :new
     end
   end
 
   def destroy
     sign_out
-    redirect_to new_session_url
+    flash[:notice] = ["Successfully logged out!"]
+    head :ok
   end
 
   private
