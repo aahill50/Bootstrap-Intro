@@ -12,4 +12,39 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require bootstrap
 //= require_tree .
+
+$(function () {
+	var $form = $("form.contact");
+	var $email = $('#email');
+	var $msg = $('textarea');
+
+	$form.on("submit", function (event) {
+		event.preventDefault();
+
+		$('div.alert').remove();
+		$msg.removeClass('alert alert-danger alert-success')
+		$email.removeClass('alert alert-danger alert-success')
+
+		if ($msg.val() === "" ) {
+			$msg.addClass('alert alert-danger');
+
+			$('form.contact')
+			.prepend($('<div class="alert alert-danger">\
+			What is your question....?</div>'))
+		} else {
+			$msg.addClass('alert alert-success');
+		}
+
+		if ($email.val() === "") {
+			$email.addClass('alert alert-danger');
+
+			$('form.contact')
+			.prepend($('<div class="alert alert-danger">\
+			Can\'t have blank email!!!!</div>'))
+		} else {
+			$email.addClass('alert alert-success');
+		}
+	});
+});
